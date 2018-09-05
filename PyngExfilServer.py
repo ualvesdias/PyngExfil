@@ -19,9 +19,9 @@ def startICMPSniffer(iface):
     sniff(filter='icmp [icmptype] == 8', iface=iface, prn=receiveData)
 
 def receiveData(packet):
-    raw = packet.getlayer(Raw).load
-    print(len(raw))
-    print(XORDecode(raw))
+    if packet.haslayer(ICMP) and packet.haslayer(Raw):
+        raw = packet.getlayer(Raw).load
+        print(XORDecode(raw))
 
 def main():
     parser = ap.ArgumentParser(description="Data exfiltration within ICMP packets.")
